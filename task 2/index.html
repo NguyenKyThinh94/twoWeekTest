@@ -32,7 +32,7 @@
             text-align: center;
              border: 1px solid grey;
              height: fit-content;
-             max-height:2500px;
+             max-height:600px;
              overflow: scroll;
              overflow-x: hidden;
         }
@@ -59,7 +59,9 @@
         }
     </style>
     <form action="">
+        <label for="">Hàng</label>
         <input type="number" name="hang" id="hangInput" value="0">
+        <label for="">Cột</label>
         <input type="number" name="cot" id="cotInput" value="0">
         <button id="rederButon" type="button">Render Now</button>
     </form>
@@ -113,6 +115,7 @@
             numberInRows = [];
             for( let i =0; i<hang;i++){
                 let numberInRow=[];
+                numberInRow.push('Hàng: '+i.toString());
                 for( let j=0;j<cot;j++){
                     numberInRow.push(Math.floor(Math.random() * 1001));
                 }
@@ -128,7 +131,7 @@
             headerTable.innerHTML='';
             let row=document.createElement('tr');
             row.innerHTML='<th>STT</th>';
-            for( let j=0;j<cot;j++){
+            for( let j=1;j<cot;j++){
                     let th = document.createElement('th');
                     th.setAttribute('data-colum',j);
                     th.innerHTML=' Cột:' + j.toString();
@@ -144,9 +147,9 @@
             for( let i =0; i<array.length;i++){
                 let numberInRow=array[i];
                 let row=document.createElement('tr');
-                row.innerHTML='<td>Hàng: '+ i.toString() +'</td>';
+                row.innerHTML='<td>'+numberInRow[0]+'</td>';
 
-                for( let j=0;j<numberInRow.length;j++){
+                for( let j=1;j<numberInRow.length;j++){
                     let td = document.createElement('td');
                     td.innerHTML= numberInRow[j].toString();
                     row.appendChild(td);
@@ -175,7 +178,10 @@
             
             
         }
-   
+        function disPlayBody(event){
+            console.log(event);
+            
+        }
 
         function init() {
             const [hang,cot]=GetHangCot();
@@ -183,6 +189,7 @@
             reder(numberInRows) ;
             rederButon.addEventListener('click',init);
             headerTable.addEventListener('click',sort);
+            bodyTable.addEventListener('scroll',disPlayBody)
         }
         init();
 
