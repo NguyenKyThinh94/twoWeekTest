@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Task2-GridTable</title>
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: fit-content;
+            margin: auto;
+            padding: 5px;
+            border: 1px solid black;
+            background-color: whitesmoke;
+        }
+
+        table,thead, tbody {
+            display: block;
+            width: 100%;
+        }
+        tbody{
+            text-align: center;
+             border: 1px solid grey;
+             height: fit-content;
+             max-height:2500px;
+             overflow: scroll;
+             overflow-x: hidden;
+        }
+
+        tr {
+            display: flex;
+        }
+
+        th,  td {
+            display: block;
+           width: 75px;
+           height: 25px;
+
+        }
+
+        input {
+            width: 75px;
+        }
+
+        form {
+            width: fit-content;
+            margin: auto;
+            margin-top: 50px;
+        }
+    </style>
+    <form action="">
+        <input type="number" name="hang" id="hangInput" value="0">
+        <input type="number" name="cot" id="cotInput" value="0">
+        <button id="rederButon" type="button">Render Now</button>
+    </form>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const container = document.querySelector('.container');
+        const headerTable = document.querySelector('thead');
+        const bodyTable = document.querySelector('tbody');
+        const rederButon = document.querySelector('#rederButon');
+        let numberInRows = [];
+
+        //fuction in heree 
+        function GetHangCot(){
+        function validate(input){
+            if(parseInt(input.value)){
+                return parseInt(input.value);
+                input.style.border='1px solid black';
+                alert('Nhập số hàng  hoặc côt lớn hơn 0');
+            } else {
+                input.style.border='1px solid red';
+                return 0;
+            }
+        }
+        let hang=document.getElementById('hangInput');
+        let cot=document.getElementById('cotInput');
+        return([validate(hang),validate(cot)]);
+    }
+    function getNumber(hang,cot){
+            numberInRows = [];
+            for( let i =0; i<hang;i++){
+                let numberInRow=[];
+                for( let j=0;j<cot;j++){
+                    numberInRow.push(Math.floor(Math.random() * 1001));
+                }
+                numberInRows.push(numberInRow);
+            }
+
+        }
+        function renderHeader(array){
+            let cot=0;
+            if(array[0]){
+                cot=array[0].length;
+            }            
+            headerTable.innerHTML='';
+            let row=document.createElement('tr');
+            row.innerHTML='<th>STT</th>';
+            for( let j=0;j<cot;j++){
+                    let th = document.createElement('th');
+                    th.setAttribute('data-colum',j);
+                    th.innerHTML=' Cột:' + j.toString();
+                    row.appendChild(th);
+                }
+            headerTable.appendChild(row);
+           
+
+        }
+ 
+        function rederBodyTabble(array){
+            bodyTable.innerHTML='';
+            for( let i =0; i<array.length;i++){
+                let numberInRow=array[i];
+                let row=document.createElement('tr');
+                row.innerHTML='<td>Hàng: '+ i.toString() +'</td>';
+
+                for( let j=0;j<numberInRow.length;j++){
+                    let td = document.createElement('td');
+                    td.innerHTML= numberInRow[j].toString();
+                    row.appendChild(td);
+                }
+                bodyTable.appendChild(row);
+            }
+
+        }
+        function reder(numberInRows) {
+           
+            renderHeader(numberInRows);
+            rederBodyTabble(numberInRows);
+          
+        }
+        function sort(event){
+            let colum=event.target;
+            let columNumber=parseInt(colum.dataset.colum) ;
+            let sortedNumberInRows=numberInRows.sort((rowa, rowb)=>{
+                if((rowa[columNumber]-rowb[columNumber])<0){
+                    return -1;
+                } else {
+                    return 1;
+                }
+            } )
+            reder(sortedNumberInRows);
+            
+            
+        }
+   
+
+        function init() {
+            const [hang,cot]=GetHangCot();
+            getNumber(hang,cot);
+            reder(numberInRows) ;
+            rederButon.addEventListener('click',init);
+            headerTable.addEventListener('click',sort);
+        }
+        init();
+
+
+
+    </script>
+</body>
+
+</html>
