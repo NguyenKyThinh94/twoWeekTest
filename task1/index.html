@@ -185,19 +185,24 @@
                     ovuong.innerHTML = 'X';
                     infor[row][colum] = '1';
                 }
+                resolve();
             } else {
                 alert('Ô này đã chọn rồi');
+                reject();
             }
-            resolve();
-            reject();
+            
+           
             });
             checkWiner
             .then( function(){
-                if (checkWin(row, colum)) {
-                if (confirm('Winer is: ' + ovuong.innerHTML + 'Bạn muốn set lại game ?')) {
+                setTimeout(function(){
+                    if (checkWin(row, colum)) {
+                     if (confirm('Winer is: ' + ovuong.innerHTML + 'Bạn muốn set lại game ?')) {
                     init();
                 };
                 }
+                }, 30);
+               
             })
         }
             function checkOvuong(checkWiner){
