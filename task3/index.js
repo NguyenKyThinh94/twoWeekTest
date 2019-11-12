@@ -173,7 +173,7 @@ function snakeRun(event) {
 
             }
         }
-    }, 1000);
+    }, 500);
 }
 
 

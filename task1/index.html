@@ -75,12 +75,16 @@
 
         </div>
     </div>
+    <center>
+        <p id="luotchoi"></p>
+    </center>
 
     <!-- Java Script here -->
     <script>
         const container = document.querySelector('.container');
         const playButon = document.querySelector('#playButon');
         const resetButon = document.querySelector('#resetButon');
+        const luotchoi = document.querySelector('#luotchoi');
         let infor = [];
         let max=3;
         let walks=[
@@ -167,30 +171,44 @@
             const row = parseInt(ovuong.dataset.row);
             const colum = parseInt(ovuong.dataset.colum);
             let checked = ovuong.dataset.checked == '0';
-            if (checked) {
-                ovuong.dataset.checked = '1';
+            let  checkWiner = new Promise(function(resolve, reject) {
+                     if (checked) {
+                 ovuong.dataset.checked = '1';
                 if (container.dataset.player == '0') {
                     container.dataset.player = '1';
+                    luotchoi.innerHTML='Tới lượt chơi của : X'
                     ovuong.innerHTML = 'O';
                     infor[row][colum] = '0';
                 } else {
                     container.dataset.player = '0';
+                    luotchoi.innerHTML='Tới lượt chơi của : O'
                     ovuong.innerHTML = 'X';
                     infor[row][colum] = '1';
                 }
             } else {
                 alert('Ô này đã chọn rồi');
             }
-            if (checkWin(row, colum)) {
+            resolve();
+            reject();
+            });
+            checkWiner
+            .then( function(){
+                if (checkWin(row, colum)) {
                 if (confirm('Winer is: ' + ovuong.innerHTML + 'Bạn muốn set lại game ?')) {
-                    setGame();
+                    init();
                 };
-
-            }
+                }
+            })
+        }
+            function checkOvuong(checkWiner){
+               
+            checkOvuong();
+            
 
 
         }
         function setGame() {
+            
             function validate(input) {
                 if (parseInt(input.value)) {
                     return parseInt(input.value);
@@ -206,9 +224,19 @@
             max=parseInt(soOInput.value);
             reder(validate(hang), validate(cot));
             infor = getInfor();
+            luotchoi.innerHTML='Tới lượt chơi của : O';
+            hang.disabled=true;
+            soOInput.disabled=true;
+
+
         }
 
         function init() {
+            let hang = document.getElementById('hangInput');
+            let soOInput= document.getElementById('soOInput');
+            hang.disabled=false;
+            soOInput.disabled=false;
+  
             reder(3, 3);
             infor = getInfor();
             container.addEventListener('click', changeAndCheck);
