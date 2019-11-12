@@ -92,7 +92,7 @@ function snakeRun(event) {
         return out;
     }
     window.addEventListener('keydown', changeWark);
-
+    select.disabled =true;
     let [startX, StartY] = [10, 10]; // Điểm bắt đầu
     let snakeL = []; // Mảng chứa các ô của con snake
     let length = 1; // Chiều dành con rắn // Chiều dài amgr
@@ -111,6 +111,7 @@ function snakeRun(event) {
             if ((startX < 0) || (StartY < 0) || (startX > 20) || (StartY > 20) || containXY) {
                 alert(' Game Over');
                 clearInterval(interval_obj); //clear timer
+                select.disabled =false;
                 clear();
             } else {
                 snakeL.push([startX, StartY]);
@@ -142,6 +143,7 @@ function snakeRun(event) {
                 // Game over khi cắn trúng thân
                 alert(' Game Over');
                 clearInterval(interval_obj);
+                select.disabled =false;
                 clear();
             } else {
                 //nếu tông tường cho chạy từ phía kia
