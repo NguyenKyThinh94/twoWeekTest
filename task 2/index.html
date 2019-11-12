@@ -40,7 +40,8 @@
             text-align: center;
             border: 1px solid grey;
             height: fit-content;
-            max-height:600px;
+             max-height:600px;
+            min-height:300px;
             overflow-x: hidden;
         }
 
@@ -81,7 +82,7 @@
                     <td>1</td>
                 </tr>
             </thead>
-            <tbody class="tbodyScroll">
+            <tbody class="tbody">
                 <tr>
                     <td>1</td>
                     <td>1</td>
@@ -101,6 +102,7 @@
         const bodyTable = document.querySelector('tbody');
         const rederButon = document.querySelector('#rederButon');
         let numberInRows = [];
+        let max=0;
 
         //fuction in heree 
         function GetHangCot(){
@@ -151,7 +153,8 @@
  
         function rederBodyTabble(array){
             bodyTable.innerHTML='';
-            for( let i =0; i<array.length;i++){
+            maxlength= (max+23<array.length)?max+23:array.length;
+            for( let i =max; i<maxlength;i++){
                 let numberInRow=array[i];
                 let row=document.createElement('tr');
                 row.innerHTML='<td>'+numberInRow[0]+'</td>';
@@ -166,7 +169,7 @@
 
         }
         function reder(numberInRows) {
-           
+            max=0;
             renderHeader(numberInRows);
             rederBodyTabble(numberInRows);
           
@@ -186,7 +189,22 @@
             
         }
         function disPlayBody(event){
-            console.log(event);
+            if(event.deltaY>0){ 
+                if(max+25>=numberInRows.length) {
+                max=0;
+            } else {
+                max+=23;
+            }
+            }else {
+                if(max-25<0) {
+                max=0;
+            } else {
+                max-=23;
+            }
+            }
+            
+            rederBodyTabble(numberInRows);
+            console.log(event.deltaY);
             
         }
 
@@ -196,7 +214,7 @@
             reder(numberInRows) ;
             rederButon.addEventListener('click',init);
             headerTable.addEventListener('click',sort);
-            bodyTable.addEventListener('scroll',disPlayBody)
+            bodyTable.addEventListener('wheel',disPlayBody);
         }
         init();
 
