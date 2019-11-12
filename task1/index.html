@@ -51,10 +51,10 @@
     </style>
       <!-- HTML here -->
     <form action="">
-        <label for="">Hàng</label>
+        <label for="">Hàng/ Cột</label>
         <input type="number" name="hang" id="hangInput" value="3">
-        <label for="">Cột</label>
-        <input type="number" name="cot" id="cotInput" value="3">
+        <label for="">Số ô</label>
+        <input type="number" name="cot" id="soOInput" value="3">
         <button id="playButon" type="button">Play Now</button>
         <button id="resetButon" type="button">Reset Game </button>
     </form>
@@ -82,6 +82,17 @@
         const playButon = document.querySelector('#playButon');
         const resetButon = document.querySelector('#resetButon');
         let infor = [];
+        let max=3;
+        let walks=[
+            [-1,0],
+            [-1,-1],
+            [0,-1],
+            [1,-1],
+            [1,0],
+            [1,1],
+            [0,1],
+            [-1,1]
+        ]
 
         //fuction in heree 
         // Lấy dự liệu các ô
@@ -131,37 +142,24 @@
             return infor[row][colum];
         }
         function checkWin(row, colum) {
+            let out=false;
             let value = returnValue(row, colum);
-            if (value == '2') return false;
-            if (value == returnValue(row - 1, colum)) {
-                if (value == returnValue(row - 2, colum)) return true;
-                if (value == returnValue(row + 1, colum)) return true
-            }
-            if (value == returnValue(row - 1, colum - 1)) {
-                if (value == returnValue(row + 1, colum + 1)) return true
-                if (value == returnValue(row - 2, colum - 2)) return true
-            }
-            if (value == returnValue(row, colum - 1)) {
-                if (value == returnValue(row, colum - 2)) return true
-                if (value == returnValue(row, colum + 1)) return true
-            }
-            if (value == returnValue(row + 1, colum - 1)) {
-                if (value == returnValue(row - 1, colum + 1)) return true
-                if (value == returnValue(row + 2, colum - 2)) return true
-            }
-            if (value == returnValue(row + 1, colum)) {
-                if (value == returnValue(row - 1, colum)) return true
-            }
-            if (value == returnValue(row + 1, colum + 1)) {
-                if (value == returnValue(row + 2, colum + 2)) return true
-            }
-            if (value == returnValue(row, colum + 1)) {
-                if (value == returnValue(row, colum + 2)) return true
-            }
-            if (value == returnValue(row - 1, colum + 1)) {
-                if (value == returnValue(row - 2, colum + 2)) return true
-            }
-            return false;
+            walks.forEach(walk => {
+                let newRow=row;
+                let newColum=colum;
+                let leng=0;
+                for(i=-max+1;i<max+1;i++){
+                newRow=row+i*walk[0];
+                newColum=colum+i*walk[1];
+                if(returnValue(newRow,newColum)!=value) {
+                    leng=0;
+                } else {
+                    leng++;
+                    if(leng==max)  out=true;
+                }
+                }
+                 });
+            return out;
         }
 
         function changeAndCheck(event) {
@@ -203,7 +201,9 @@
                 }
             }
             let hang = document.getElementById('hangInput');
-            let cot = document.getElementById('cotInput');
+            let soOInput= document.getElementById('soOInput');
+            let cot=hang;
+            max=parseInt(soOInput.value);
             reder(validate(hang), validate(cot));
             infor = getInfor();
         }

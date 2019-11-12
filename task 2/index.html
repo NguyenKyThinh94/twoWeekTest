@@ -28,13 +28,20 @@
             display: block;
             width: 100%;
         }
-        tbody{
+        .tbodyScroll{
             text-align: center;
              border: 1px solid grey;
              height: fit-content;
              max-height:600px;
              overflow: scroll;
              overflow-x: hidden;
+        }
+        .tbody{
+            text-align: center;
+            border: 1px solid grey;
+            height: fit-content;
+            max-height:600px;
+            overflow-x: hidden;
         }
 
         tr {
@@ -74,7 +81,7 @@
                     <td>1</td>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="tbodyScroll">
                 <tr>
                     <td>1</td>
                     <td>1</td>
